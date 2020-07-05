@@ -5,12 +5,58 @@
     <meta name="viewport" content="width=device-width">
     <title>Astronauts</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <script>
+      window.addEventListener("load", function()  {
+        fetch("https://handlers.education.launchcode.org/static/astronauts.json")
+          .then(function(response) {
+            response.json().then(function(json) {
+              const profile = document.getElementById("bio");
+              json.sort(function(a,b){return b.hoursInSpace - a.hoursInSpace});
+              
+              for (let i = 0; i < json.length; i ++)  {
+                let activeColor;
+                if (json[i].active == true) {
+                  activeColor = "green";
+                }
+                profile.innerHTML += 
+                  `
+                  <div class = "astronaut">
+                    <h3>${json[i].firstName} ${json[i].lastName}</h3>
+                
+                      <ul>
+                        <li>Hours in space: ${json[i].hoursInSpace}</li>
+                        <li style = "color: ${activeColor}">Active: ${json[i].active}</li>
+                        <li>Skills: ${json[i].skills}</li>
+                      </ul>
+                      <img src=${json[i].picture} class="avatar"></img>
+                  </div>
+                  `
+              };
+              profile.innerHTML += `<h3>Total astronauts is: ${json.length}</h3>`;
+              
+            })
+          })
+      })
+
+
+
+    </script>
+
+
   </head>
   <body>
     <script src="script.js"></script>
     <h1>Astronauts</h1>
     <div id="container">
         <!-- List of astronauts will be added here dynamically -->
+        
+        <div id="bio">
+
+        </div>
+
+
+
     </div>
   </body>
 </html>
